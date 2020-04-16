@@ -1,0 +1,22 @@
+{
+    "name": "penthouse-cli",
+    "version": "1.0.0",
+    "description": "Penthouse cli tool",
+    "bin": {
+        "penthouse-cli": "./bin/penthouse-cli"
+    },
+    "main": "index",
+    "keywords": [
+        "Penthouse",
+        "cli-tool"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/duckchip/penthouse-cli.git"
+    },
+    "author": "Tristan Hofman",
+    "license": "ISC",
+    "dependencies": {
+      "penthouse": "^2.2.2"
+   }
+}
