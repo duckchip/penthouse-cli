@@ -1,3 +1,84 @@
 #!/usr/bin/env node
 
-console.log('test');
+'use strict';
+
+const penthouse = require('penthouse');
+const yargs     = require('yargs');
+const argv      = yargs.argv;
+const fs        = require('fs');
+
+require('yargs')
+    .options({
+        'url': {
+            describe: 'The url to fetch the css',
+            demandOption: true
+        },
+        'output': {
+           describe: 'provide an output file name',
+            demandOption: true
+        },
+        'width': {
+            default: 1300,
+            describe: 'provide the width'
+        },
+        'height': {
+            default: 900,
+            describe: 'provide the heigth'
+        },
+        'cssString': {
+            describe: 'cssString to prune into critical css',
+            demandOption: true
+        },
+        'timeout': {
+            default: 30000,
+            describe: 'provide a timeout'
+        },
+        'pageLoadSkipTimeout': {
+            default: 0,
+            describe: ''
+        },
+        'renderWaitTime': {
+            default: 100,
+            describe: 'Time to wait before rendering'
+        },
+        'blockJSRequests': {
+            default: true,
+            describe: 'Block Js requests'
+        },
+        'stict': {
+            default: false,
+            describe: 'strict mode'
+        },
+        'userAgent': {
+            default: 'Penthouse Critical Path CSS Generator',
+            describe: 'The use Agent you want to use'
+        },
+        'keepLargerMediaQueries': {
+            default: false,
+        }
+    })
+    .number(['width', 'height', 'timeout'])
+    .help()
+    .argv
+
+function criticalCss()
+{
+    let outputFile = argv.output + '.css';
+
+    let parameters = {
+        url: argv.url,
+        width: argv.width,
+        height: argv.height
+    };
+
+    if (argv.cssString) {
+        parameters.cssString = argv.cssString;
+    }
+
+    penthouse(parameters).then(criticalCss => {
+        // use the critical css
+        fs.writeFileSync(outputFile, criticalCss);
+    })
+}
+
+criticalCss();

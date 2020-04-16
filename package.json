@@ -17,6 +17,7 @@
     "author": "Tristan Hofman",
     "license": "ISC",
     "dependencies": {
-      "penthouse": "^2.2.2"
+      "penthouse": "^2.2.2",
+      "yargs": "^15.3.0"
    }
 }
