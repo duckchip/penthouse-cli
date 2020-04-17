@@ -1,9 +1,9 @@
 {
     "name": "penthouse-cli",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Penthouse cli tool",
     "bin": {
-        "penthouse-cli": "./bin/penthouse-cli"
+        "penthouse": "./bin/penthouse-cli"
     },
     "main": "index",
     "keywords": [
