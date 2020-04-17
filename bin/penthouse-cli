@@ -25,9 +25,11 @@ require('yargs')
             default: 900,
             describe: 'provide the heigth'
         },
+        'css': {
+            describe: 'css file to use as base'
+        },
         'cssString': {
-            describe: 'cssString to prune into critical css',
-            demandOption: true
+            describe: 'cssFile to prune into critical css, comma separated'
         },
         'timeout': {
             default: 30000,
@@ -63,7 +65,11 @@ require('yargs')
 
 function criticalCss()
 {
-    let outputFile = argv.output + '.css';
+    let outputFile = argv.output;
+
+    if (!outputFile.endsWith(".css")) {
+        outputFile += '.css';
+    }
 
     let parameters = {
         url: argv.url,
@@ -71,14 +77,22 @@ function criticalCss()
         height: argv.height
     };
 
-    if (argv.cssString) {
-        parameters.cssString = argv.cssString;
-    }
+    argv.css ? parameters.css = argv.css: '';
+    argv.cssString ? parameters.cssString = argv.cssString: '';
+    argv.timeout ? parameters.timeout = argv.timeout: '';
+    argv.pageLoadSkipTimeout ? parameters.pageLoadSkipTimeout = argv.pageLoadSkipTimeout: '';
+    argv.renderWaitTime ? parameters.renderWaitTime = argv.renderWaitTime: '';
+    argv.blockJSRequests ? parameters.blockJSRequests = argv.blockJSRequests: '';
+    argv.stict ? parameters.stict = argv.stict: '';
+    argv.userAgent ? parameters.userAgent = argv.userAgent: '';
+    argv.keepLargerMediaQueries ? parameters.keepLargerMediaQueries = argv.keepLargerMediaQueries: '';
 
-    penthouse(parameters).then(criticalCss => {
+    penthouse(parameters).then(critical => {
         // use the critical css
-        fs.writeFileSync(outputFile, criticalCss);
-    })
+        fs.writeFileSync(outputFile, critical);
+    }, reason => {
+        console.log(reason);
+    });
 }
 
 criticalCss();
